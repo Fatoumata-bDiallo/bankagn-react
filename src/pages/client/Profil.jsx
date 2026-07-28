@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import ClientSidebar from '../../components/ClientSidebar'
 
-const API = 'https://bankagn-production.up.railway.app'
+const API = import.meta.env.VITE_API_URL || 'https://bankagn-production.up.railway.app'
 
 export default function ClientProfil() {
   const [profil, setProfil] = useState({})

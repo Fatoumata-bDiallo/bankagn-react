@@ -2,7 +2,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
-const API = 'https://bankagn-production.up.railway.app'
+const API = import.meta.env.VITE_API_URL || 'https://bankagn-production.up.railway.app'
 
 export default function Login() {
   const [email, setEmail] = useState('')

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import ClientSidebar from '../../components/ClientSidebar'
 
-const API = 'https://bankagn-production.up.railway.app'
+const API = import.meta.env.VITE_API_URL || 'https://bankagn-production.up.railway.app'
 
 const TABS = [
   { key: 'depot', label: '⬇️ Dépôt', color: '#16a34a' },
