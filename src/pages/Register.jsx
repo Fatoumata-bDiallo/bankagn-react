@@ -7,8 +7,9 @@ const API = import.meta.env.VITE_API_URL || 'https://bankagn-production.up.railw
 export default function Register() {
   const [form, setForm] = useState({
     nom: '', prenom: '', email: '',
-    telephone: '', motDePasse: ''
+    telephone: '', motDePasse: '', typePiece: 'CNI'
   })
+  const [fichier, setFichier] = useState(null)
   const [erreur, setErreur] = useState('')
   const [succes, setSucces] = useState('')
   const [loading, setLoading] = useState(false)
@@ -18,12 +19,27 @@ export default function Register() {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
+  const handleFile = (e) => {
+    setFichier(e.target.files[0])
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
     setErreur('')
     try {
-      const res = await axios.post(`${API}/api/auth/register`, form)
+      const data = new FormData()
+      data.append('nom', form.nom)
+      data.append('prenom', form.prenom)
+      data.append('email', form.email)
+      data.append('telephone', form.telephone)
+      data.append('motDePasse', form.motDePasse)
+      data.append('typePiece', form.typePiece)
+      if (fichier) data.append('pieceIdentite', fichier)
+
+      const res = await axios.post(`${API}/api/auth/register`, data, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
       if (res.data.success) {
         setSucces('Inscription réussie ! Vérifiez votre email.')
         setTimeout(() => navigate('/login'), 3000)
@@ -63,46 +79,76 @@ export default function Register() {
           <div style={{
             background: '#fee2e2', border: '1px solid #dc2626',
             borderRadius: '10px', padding: '12px',
-            marginBottom: '20px', color: '#dc2626'
+            marginBottom: '20px', color: '#dc2626', fontSize: '0.9rem'
           }}>{erreur}</div>
         )}
-
         {succes && (
           <div style={{
             background: '#dcfce7', border: '1px solid #16a34a',
             borderRadius: '10px', padding: '12px',
-            marginBottom: '20px', color: '#16a34a'
+            marginBottom: '20px', color: '#16a34a', fontSize: '0.9rem'
           }}>{succes}</div>
         )}
 
         <form onSubmit={handleSubmit}>
           {[
-            { name: 'nom', label: 'Nom', type: 'text', placeholder: 'Diallo' },
-            { name: 'prenom', label: 'Prénom', type: 'text', placeholder: 'Mamadou' },
-            { name: 'email', label: 'Email', type: 'email', placeholder: 'votre@email.com' },
-            { name: 'telephone', label: 'Téléphone', type: 'text', placeholder: '624 000 000' },
-            { name: 'motDePasse', label: 'Mot de passe', type: 'password', placeholder: '••••••' },
+            { name: 'nom', label: 'Nom', type: 'text' },
+            { name: 'prenom', label: 'Prénom', type: 'text' },
+            { name: 'email', label: 'Email', type: 'email' },
+            { name: 'telephone', label: 'Téléphone', type: 'text' },
+            { name: 'motDePasse', label: 'Mot de passe', type: 'password' },
           ].map(field => (
-            <div key={field.name} style={{ marginBottom: '15px' }}>
-              <label style={{
-                display: 'block', fontWeight: 600,
-                color: '#1a3c5e', marginBottom: '6px'
-              }}>{field.label}</label>
+            <div key={field.name} style={{ marginBottom: '18px' }}>
+              <label style={{ display: 'block', fontWeight: 600, color: '#1a3c5e', marginBottom: '6px' }}>
+                {field.label}
+              </label>
               <input
                 type={field.type}
                 name={field.name}
                 value={form[field.name]}
                 onChange={handleChange}
-                placeholder={field.placeholder}
                 required
                 style={{
-                  width: '100%', padding: '12px 15px',
-                  border: '2px solid #e9ecef', borderRadius: '12px',
-                  fontSize: '0.95rem', boxSizing: 'border-box', outline: 'none'
+                  width: '100%', padding: '12px 15px', border: '2px solid #e9ecef',
+                  borderRadius: '12px', fontSize: '0.95rem', boxSizing: 'border-box', outline: 'none'
                 }}
               />
             </div>
           ))}
+
+          <div style={{ marginBottom: '18px' }}>
+            <label style={{ display: 'block', fontWeight: 600, color: '#1a3c5e', marginBottom: '6px' }}>
+              Type de pièce d'identité
+            </label>
+            <select
+              name="typePiece"
+              value={form.typePiece}
+              onChange={handleChange}
+              style={{
+                width: '100%', padding: '12px 15px', border: '2px solid #e9ecef',
+                borderRadius: '12px', fontSize: '0.95rem', boxSizing: 'border-box', outline: 'none'
+              }}
+            >
+              <option value="CNI">Carte Nationale d'Identité</option>
+              <option value="PASSEPORT">Passeport</option>
+              <option value="PERMIS">Permis de conduire</option>
+            </select>
+          </div>
+
+          <div style={{ marginBottom: '25px' }}>
+            <label style={{ display: 'block', fontWeight: 600, color: '#1a3c5e', marginBottom: '6px' }}>
+              Photo de la pièce d'identité
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFile}
+              style={{
+                width: '100%', padding: '10px', border: '2px dashed #e9ecef',
+                borderRadius: '12px', fontSize: '0.9rem', boxSizing: 'border-box'
+              }}
+            />
+          </div>
 
           <button
             type="submit"
@@ -111,11 +157,10 @@ export default function Register() {
               width: '100%', padding: '14px',
               background: 'linear-gradient(135deg, #1a3c5e, #f0a500)',
               color: 'white', border: 'none', borderRadius: '12px',
-              fontSize: '1rem', fontWeight: 700, cursor: 'pointer',
-              marginTop: '10px'
+              fontSize: '1rem', fontWeight: 700, cursor: 'pointer'
             }}
           >
-            {loading ? 'Inscription...' : 'Créer mon compte'}
+            {loading ? 'Inscription...' : "S'inscrire"}
           </button>
         </form>
 
