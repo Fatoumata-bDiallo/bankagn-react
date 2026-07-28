@@ -19,12 +19,13 @@ export default function OTP() {
       const res = await axios.post(`${API}/api/auth/verify-otp`, {
         email, code
       })
-      if (res.data.success) {
-        localStorage.setItem('token', res.data.token)
-        localStorage.setItem('role', res.data.role)
-        localStorage.setItem('prenom', res.data.prenom)
-        localStorage.setItem('nom', res.data.nom)
-        if (res.data.role === 'ADMIN') {
+     if (res.data.success) {
+        const { token, role, prenom, nom } = res.data.data
+        localStorage.setItem('token', token)
+        localStorage.setItem('role', role)
+        localStorage.setItem('prenom', prenom)
+        localStorage.setItem('nom', nom)
+        if (role === 'ADMIN') {
           navigate('/admin/dashboard')
         } else {
           navigate('/client/dashboard')
