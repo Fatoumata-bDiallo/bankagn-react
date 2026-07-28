@@ -6,6 +6,7 @@ export default function ClientSidebar({ active }) {
 
   const links = [
     { icon: '🏠', label: 'Dashboard', path: '/client/dashboard' },
+    { icon: '💼', label: 'Opérations', path: '/client/operations' },
     { icon: '💸', label: 'Transactions', path: '/client/transactions' },
     { icon: '📄', label: 'Relevé', path: '/client/releve' },
     { icon: '💰', label: 'Prêts', path: '/client/prets' },

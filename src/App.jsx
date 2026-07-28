@@ -12,6 +12,7 @@ import AdminFraudes from './pages/admin/Fraudes'
 import AdminAudit from './pages/admin/Audit'
 import AdminRapports from './pages/admin/Rapports'
 import ClientDashboard from './pages/client/Dashboard'
+import ClientOperations from './pages/client/Operations'
 import ClientTransactions from './pages/client/Transactions'
 import ClientReleve from './pages/client/Releve'
 import ClientPrets from './pages/client/Prets'
@@ -35,6 +36,7 @@ function App() {
         <Route path="/admin/audit" element={<AdminAudit />} />
         <Route path="/admin/rapports" element={<AdminRapports />} />
         <Route path="/client/dashboard" element={<ClientDashboard />} />
+        <Route path="/client/operations" element={<ClientOperations />} />
         <Route path="/client/transactions" element={<ClientTransactions />} />
         <Route path="/client/releve" element={<ClientReleve />} />
         <Route path="/client/prets" element={<ClientPrets />} />
