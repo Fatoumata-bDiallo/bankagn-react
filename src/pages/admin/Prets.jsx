@@ -26,6 +26,32 @@ export default function Prets() {
     setLoading(false)
   }
 
+  const accepter = async (id) => {
+    try {
+      const res = await axios.put(`${API}/api/admin/prets/${id}/accepter`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      setMessage(res.data.message)
+      fetchPrets()
+      setTimeout(() => setMessage(''), 3000)
+    } catch (err) {
+      setMessage(err.response?.data?.message || 'Erreur')
+    }
+  }
+
+  const refuser = async (id) => {
+    try {
+      const res = await axios.put(`${API}/api/admin/prets/${id}/refuser`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      setMessage(res.data.message)
+      fetchPrets()
+      setTimeout(() => setMessage(''), 3000)
+    } catch (err) {
+      setMessage(err.response?.data?.message || 'Erreur')
+    }
+  }
+
   return (
     <div style={{ minHeight: '100vh', background: '#f0f4f8', display: 'flex' }}>
       <AdminSidebar active="/admin/prets" />
@@ -90,7 +116,7 @@ export default function Prets() {
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>
-                  {['Référence', 'Client', 'Montant', 'Statut', 'Date'].map(h => (
+                  {['Référence', 'Client', 'Montant', 'Statut', 'Date', 'Actions'].map(h => (
                     <th key={h} style={{
                       background: '#1a3c5e', color: 'white',
                       padding: '12px', textAlign: 'left', fontWeight: 600
@@ -135,6 +161,22 @@ export default function Prets() {
                     }}>
                       {p.dateCreation ?
                         new Date(p.dateCreation).toLocaleDateString('fr-FR') : '-'}
+                    </td>
+                    <td style={{ padding: '12px' }}>
+                      {p.statut === 'EN_ATTENTE' && (
+                        <div style={{ display: 'flex', gap: '6px' }}>
+                          <button onClick={() => accepter(p.id)} style={{
+                            padding: '6px 12px', background: '#16a34a', color: 'white',
+                            border: 'none', borderRadius: '8px', fontWeight: 600,
+                            fontSize: '0.8rem', cursor: 'pointer'
+                          }}>✓ Accepter</button>
+                          <button onClick={() => refuser(p.id)} style={{
+                            padding: '6px 12px', background: '#dc2626', color: 'white',
+                            border: 'none', borderRadius: '8px', fontWeight: 600,
+                            fontSize: '0.8rem', cursor: 'pointer'
+                          }}>✗ Refuser</button>
+                        </div>
+                      )}
                     </td>
                   </tr>
                 ))}
