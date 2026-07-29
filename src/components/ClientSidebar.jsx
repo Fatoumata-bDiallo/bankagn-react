@@ -35,7 +35,7 @@ export default function ClientSidebar({ active }) {
         </div>
       </div>
 
-      <nav style={{ marginTop: '20px' }}>
+      <nav style={{ marginTop: '20px', paddingBottom: '30px' }}>
         {links.map(item => (
           <a key={item.path}
             href={item.path}
