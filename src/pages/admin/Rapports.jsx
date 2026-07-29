@@ -33,21 +33,20 @@ export default function Rapports() {
           <h4 style={{ margin: 0, color: '#1a3c5e', fontWeight: 700 }}>
             📊 Rapport Bancaire Officiel
           </h4>
-          <a
-            href={`${API}/admin/rapports`}
-            target="_blank"
-            rel="noreferrer"
+         <button
+            onClick={() => window.print()}
             style={{
               padding: '10px 20px',
               background: '#dc2626',
               color: 'white',
+              border: 'none',
               borderRadius: '25px',
-              textDecoration: 'none',
               fontWeight: 600,
-              fontSize: '0.9rem'
+              fontSize: '0.9rem',
+              cursor: 'pointer'
             }}>
-            📄 Télécharger PDF
-          </a>
+            🖨️ Imprimer / PDF
+          </button>
         </div>
 
         {loading ? (
