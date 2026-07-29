@@ -18,11 +18,11 @@ export default function ClientSidebar({ active }) {
   ]
 
   return (
-    <div style={{
-      width: '260px', minHeight: '100vh',
+   <div style={{
+      width: '260px', height: '100vh',
       background: 'linear-gradient(180deg, #0d2137 0%, #1a3c5e 100%)',
       padding: '20px 0', position: 'fixed', top: 0, left: 0,
-      zIndex: 100
+      zIndex: 100, overflowY: 'auto'
     }}>
       <div style={{
         textAlign: 'center', padding: '20px',
