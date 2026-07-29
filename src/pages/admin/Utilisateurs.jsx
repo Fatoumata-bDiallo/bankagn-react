@@ -44,6 +44,14 @@ export default function Utilisateurs() {
     fetchUtilisateurs()
     setTimeout(() => setMessage(''), 3000)
   }
+  const debloquer = async (id) => {
+    await axios.put(`${API}/api/admin/utilisateurs/${id}/debloquer`, {}, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    setMessage('🔓 Compte débloqué !')
+    fetchUtilisateurs()
+    setTimeout(() => setMessage(''), 3000)
+  }
 
   const enAttente = utilisateurs.filter(u => u.statut === 'EN_ATTENTE').length
   const utilisateurPiece = utilisateurs.find(u => u.id === pieceVisible)
@@ -204,6 +212,13 @@ export default function Utilisateurs() {
                             color: 'white', border: 'none', borderRadius: '8px',
                             cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600
                           }}>🔒 Bloquer</button>
+                        )}
+                        {u.statut === 'BLOQUE' && (
+                          <button onClick={() => debloquer(u.id)} style={{
+                            padding: '6px 12px', background: '#16a34a',
+                            color: 'white', border: 'none', borderRadius: '8px',
+                            cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600
+                          }}>🔓 Débloquer</button>
                         )}
                       </div>
                     </td>
