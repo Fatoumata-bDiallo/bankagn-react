@@ -43,13 +43,16 @@ export default function ClientCartes() {
 
   const action = async (id, type) => {
     try {
-      const method = type === 'supprimer' ? 'delete' : 'put'
-      const url = type === 'supprimer'
-        ? `${API}/api/client/cartes/${id}`
-        : `${API}/api/client/cartes/${id}/${type}`
-      const res = await axios[method](url, method === 'put' ? {} : undefined, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      let res
+      if (type === 'supprimer') {
+        res = await axios.delete(`${API}/api/client/cartes/${id}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+      } else {
+        res = await axios.put(`${API}/api/client/cartes/${id}/${type}`, {}, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+      }
       setMsg({ type: 'success', text: res.data.message })
       charger()
     } catch (err) {

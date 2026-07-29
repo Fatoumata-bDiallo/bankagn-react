@@ -8,6 +8,7 @@ export default function Utilisateurs() {
   const [utilisateurs, setUtilisateurs] = useState([])
   const [loading, setLoading] = useState(true)
   const [message, setMessage] = useState('')
+  const [pieceVisible, setPieceVisible] = useState(null)
   const token = localStorage.getItem('token')
 
   useEffect(() => {
@@ -45,6 +46,7 @@ export default function Utilisateurs() {
   }
 
   const enAttente = utilisateurs.filter(u => u.statut === 'EN_ATTENTE').length
+  const utilisateurPiece = utilisateurs.find(u => u.id === pieceVisible)
 
   return (
     <div style={{ minHeight: '100vh', background: '#f0f4f8', display: 'flex' }}>
@@ -126,7 +128,7 @@ export default function Utilisateurs() {
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>
-                  {['Client', 'Email', 'Téléphone', 'Statut', 'Date', 'Actions'].map(h => (
+                  {['Client', 'Email', 'Téléphone', 'Pièce', 'Statut', 'Date', 'Actions'].map(h => (
                     <th key={h} style={{
                       background: '#1a3c5e', color: 'white',
                       padding: '12px', textAlign: 'left', fontWeight: 600
@@ -162,6 +164,17 @@ export default function Utilisateurs() {
                     </td>
                     <td style={{ padding: '12px', color: '#6c757d' }}>{u.email}</td>
                     <td style={{ padding: '12px' }}>{u.telephone}</td>
+                    <td style={{ padding: '12px' }}>
+                      {u.pieceIdentite ? (
+                        <button onClick={() => setPieceVisible(u.id)} style={{
+                          padding: '6px 12px', background: '#dbeafe', color: '#2563eb',
+                          border: 'none', borderRadius: '8px', cursor: 'pointer',
+                          fontSize: '0.8rem', fontWeight: 600
+                        }}>🪪 Voir</button>
+                      ) : (
+                        <span style={{ color: '#9ca3af', fontSize: '0.8rem' }}>Aucune</span>
+                      )}
+                    </td>
                     <td style={{ padding: '12px' }}>
                       <span style={{
                         padding: '4px 10px', borderRadius: '20px',
@@ -201,6 +214,38 @@ export default function Utilisateurs() {
           )}
         </div>
       </div>
+
+      {utilisateurPiece && (
+        <div onClick={() => setPieceVisible(null)} style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(0,0,0,0.6)', display: 'flex',
+          alignItems: 'center', justifyContent: 'center', zIndex: 1000
+        }}>
+          <div onClick={e => e.stopPropagation()} style={{
+            background: 'white', borderRadius: '20px', padding: '25px',
+            textAlign: 'center', boxShadow: '0 25px 60px rgba(0,0,0,0.3)',
+            maxWidth: '90vw'
+          }}>
+            <h5 style={{ color: '#1a3c5e', marginBottom: '5px' }}>
+              🪪 Pièce d'identité — {utilisateurPiece.prenom} {utilisateurPiece.nom}
+            </h5>
+            <p style={{ color: '#6c757d', fontSize: '0.85rem', marginBottom: '15px' }}>
+              Type : {utilisateurPiece.typePiece || 'Non précisé'}
+            </p>
+            <img
+              src={`data:${utilisateurPiece.pieceIdentite}`}
+              alt="Pièce d'identité"
+              style={{ maxWidth: '400px', maxHeight: '60vh', borderRadius: '12px', border: '2px solid #e9ecef' }}
+            />
+            <div style={{ marginTop: '15px' }}>
+              <button onClick={() => setPieceVisible(null)} style={{
+                padding: '10px 25px', background: '#1a3c5e', color: 'white',
+                border: 'none', borderRadius: '20px', fontWeight: 600, cursor: 'pointer'
+              }}>Fermer</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
