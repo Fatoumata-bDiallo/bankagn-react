@@ -139,6 +139,12 @@ export default function Login() {
           >
             {loading ? 'Connexion...' : 'Se connecter'}
           </button>
+
+          <div style={{ textAlign: 'center', marginTop: '15px' }}>
+            <a href="/mot-de-passe-oublie" style={{ color: '#6c757d', fontSize: '0.85rem' }}>
+              Mot de passe oublié ?
+            </a>
+          </div>
         </form>
 
         <div style={{ textAlign: 'center', marginTop: '20px', color: '#6c757d' }}>

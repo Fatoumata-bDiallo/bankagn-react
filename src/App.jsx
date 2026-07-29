@@ -22,6 +22,8 @@ import ClientBeneficiaires from './pages/client/Beneficiaires'
 import ClientDevises from './pages/client/Devises'
 import ClientNotifications from './pages/client/Notifications'
 import ClientProfil from './pages/client/Profil'
+import MotDePasseOublie from './pages/MotDePasseOublie'
+import Reinitialiser from './pages/Reinitialiser'
 
 function App() {
   return (
@@ -50,6 +52,8 @@ function App() {
         <Route path="/client/devises" element={<ClientDevises />} />
         <Route path="/client/notifications" element={<ClientNotifications />} />
         <Route path="/client/profil" element={<ClientProfil />} />
+        <Route path="/mot-de-passe-oublie" element={<MotDePasseOublie />} />
+        <Route path="/reinitialiser/:token" element={<Reinitialiser />} />
       </Routes>
     </Router>
   )

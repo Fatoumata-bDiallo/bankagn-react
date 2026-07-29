@@ -7,6 +7,7 @@ const API = import.meta.env.VITE_API_URL || 'https://bankagn-production.up.railw
 export default function ClientTransactions() {
   const [transactions, setTransactions] = useState([])
   const [loading, setLoading] = useState(true)
+  const [qrVisible, setQrVisible] = useState(null)
   const token = localStorage.getItem('token')
 
   useEffect(() => {
@@ -48,7 +49,7 @@ export default function ClientTransactions() {
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>
-                  {['Référence', 'Type', 'Montant', 'Statut', 'Date'].map(h => (
+                  {['Référence', 'Type', 'Montant', 'Statut', 'Date', 'QR'].map(h => (
                     <th key={h} style={{
                       background: '#f8f9fa', color: '#1a3c5e',
                       padding: '12px', textAlign: 'left',
@@ -94,12 +95,46 @@ export default function ClientTransactions() {
                       {t.dateTransaction ?
                         new Date(t.dateTransaction).toLocaleDateString('fr-FR') : '-'}
                     </td>
+                    <td style={{ padding: '12px' }}>
+                      {t.qrCode && (
+                        <button onClick={() => setQrVisible(t.id === qrVisible ? null : t.id)} style={{
+                          padding: '6px 10px', background: '#f0a500', color: 'white',
+                          border: 'none', borderRadius: '8px', fontSize: '0.75rem',
+                          fontWeight: 600, cursor: 'pointer'
+                        }}>
+                          {qrVisible === t.id ? '✕ Fermer' : '📱 Voir'}
+                        </button>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           )}
         </div>
+
+        {qrVisible && (
+          <div onClick={() => setQrVisible(null)} style={{
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+            background: 'rgba(0,0,0,0.6)', display: 'flex',
+            alignItems: 'center', justifyContent: 'center', zIndex: 1000
+          }}>
+            <div onClick={e => e.stopPropagation()} style={{
+              background: 'white', borderRadius: '20px', padding: '30px',
+              textAlign: 'center', boxShadow: '0 25px 60px rgba(0,0,0,0.3)'
+            }}>
+              <h5 style={{ color: '#1a3c5e', marginBottom: '15px' }}>QR Code de la transaction</h5>
+              <img
+                src={`data:image/png;base64,${transactions.find(t => t.id === qrVisible)?.qrCode}`}
+                alt="QR Code"
+                style={{ width: '200px', height: '200px' }}
+              />
+              <p style={{ color: '#6c757d', fontSize: '0.8rem', marginTop: '15px' }}>
+                Scannez pour vérifier l'authenticité de la transaction
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
