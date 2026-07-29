@@ -7,16 +7,45 @@ const API = import.meta.env.VITE_API_URL || 'https://bankagn-production.up.railw
 export default function Comptes() {
   const [comptes, setComptes] = useState([])
   const [loading, setLoading] = useState(true)
+  const [message, setMessage] = useState('')
   const token = localStorage.getItem('token')
 
-  useEffect(() => {
+  const charger = () => {
     axios.get(`${API}/api/admin/comptes`, {
       headers: { Authorization: `Bearer ${token}` }
     }).then(res => {
       setComptes(Array.isArray(res.data) ? res.data : [])
       setLoading(false)
     }).catch(() => setLoading(false))
-  }, [])
+  }
+
+  useEffect(() => { charger() }, [])
+
+  const bloquer = async (id) => {
+    try {
+      const res = await axios.put(`${API}/api/admin/comptes/${id}/bloquer`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      setMessage(res.data.message)
+      charger()
+      setTimeout(() => setMessage(''), 3000)
+    } catch (err) {
+      setMessage(err.response?.data?.message || 'Erreur')
+    }
+  }
+
+  const debloquer = async (id) => {
+    try {
+      const res = await axios.put(`${API}/api/admin/comptes/${id}/debloquer`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      setMessage(res.data.message)
+      charger()
+      setTimeout(() => setMessage(''), 3000)
+    } catch (err) {
+      setMessage(err.response?.data?.message || 'Erreur')
+    }
+  }
 
   return (
     <div style={{ minHeight: '100vh', background: '#f0f4f8', display: 'flex' }}>
@@ -47,6 +76,14 @@ export default function Comptes() {
           </span>
         </div>
 
+        {message && (
+          <div style={{
+            background: '#dcfce7', border: '1px solid #16a34a',
+            borderRadius: '10px', padding: '12px',
+            marginBottom: '20px', color: '#16a34a', fontWeight: 600
+          }}>{message}</div>
+        )}
+
         <div style={{
           background: 'white', borderRadius: '15px',
           padding: '25px', boxShadow: '0 2px 15px rgba(0,0,0,0.05)',
@@ -65,7 +102,7 @@ export default function Comptes() {
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>
-                  {['Numéro de Compte', 'Client', 'Type', 'Solde', 'Statut', 'Date'].map(h => (
+                  {['Numéro de Compte', 'Client', 'Type', 'Solde', 'Statut', 'Date', 'Actions'].map(h => (
                     <th key={h} style={{
                       background: '#1a3c5e', color: 'white',
                       padding: '12px', textAlign: 'left', fontWeight: 600
@@ -115,6 +152,21 @@ export default function Comptes() {
                     }}>
                       {c.dateCreation ?
                         new Date(c.dateCreation).toLocaleDateString('fr-FR') : '-'}
+                    </td>
+                    <td style={{ padding: '12px' }}>
+                      {c.statut === 'ACTIF' ? (
+                        <button onClick={() => bloquer(c.id)} style={{
+                          padding: '6px 12px', background: '#dc2626', color: 'white',
+                          border: 'none', borderRadius: '8px', fontWeight: 600,
+                          fontSize: '0.8rem', cursor: 'pointer'
+                        }}>🔒 Bloquer</button>
+                      ) : (
+                        <button onClick={() => debloquer(c.id)} style={{
+                          padding: '6px 12px', background: '#16a34a', color: 'white',
+                          border: 'none', borderRadius: '8px', fontWeight: 600,
+                          fontSize: '0.8rem', cursor: 'pointer'
+                        }}>🔓 Débloquer</button>
+                      )}
                     </td>
                   </tr>
                 ))}

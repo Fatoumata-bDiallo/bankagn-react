@@ -4,13 +4,16 @@ export default function ClientSidebar({ active }) {
   const navigate = useNavigate()
   const prenom = localStorage.getItem('prenom')
 
-  const links = [
+ const links = [
     { icon: '🏠', label: 'Dashboard', path: '/client/dashboard' },
     { icon: '💼', label: 'Opérations', path: '/client/operations' },
     { icon: '💸', label: 'Transactions', path: '/client/transactions' },
     { icon: '📄', label: 'Relevé', path: '/client/releve' },
     { icon: '💰', label: 'Prêts', path: '/client/prets' },
     { icon: '💳', label: 'Cartes', path: '/client/cartes' },
+    { icon: '👥', label: 'Bénéficiaires', path: '/client/beneficiaires' },
+    { icon: '💱', label: 'Devises', path: '/client/devises' },
+    { icon: '🔔', label: 'Notifications', path: '/client/notifications' },
     { icon: '👤', label: 'Profil', path: '/client/profil' },
   ]
 

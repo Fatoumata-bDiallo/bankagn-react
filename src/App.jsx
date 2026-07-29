@@ -10,6 +10,7 @@ import AdminTransactions from './pages/admin/Transactions'
 import AdminPrets from './pages/admin/Prets'
 import AdminFraudes from './pages/admin/Fraudes'
 import AdminAudit from './pages/admin/Audit'
+import AdminDevises from './pages/admin/Devises'
 import AdminRapports from './pages/admin/Rapports'
 import ClientDashboard from './pages/client/Dashboard'
 import ClientOperations from './pages/client/Operations'
@@ -17,6 +18,9 @@ import ClientTransactions from './pages/client/Transactions'
 import ClientReleve from './pages/client/Releve'
 import ClientPrets from './pages/client/Prets'
 import ClientCartes from './pages/client/Cartes'
+import ClientBeneficiaires from './pages/client/Beneficiaires'
+import ClientDevises from './pages/client/Devises'
+import ClientNotifications from './pages/client/Notifications'
 import ClientProfil from './pages/client/Profil'
 
 function App() {
@@ -34,6 +38,7 @@ function App() {
         <Route path="/admin/prets" element={<AdminPrets />} />
         <Route path="/admin/fraudes" element={<AdminFraudes />} />
         <Route path="/admin/audit" element={<AdminAudit />} />
+        <Route path="/admin/devises" element={<AdminDevises />} />
         <Route path="/admin/rapports" element={<AdminRapports />} />
         <Route path="/client/dashboard" element={<ClientDashboard />} />
         <Route path="/client/operations" element={<ClientOperations />} />
@@ -41,6 +46,9 @@ function App() {
         <Route path="/client/releve" element={<ClientReleve />} />
         <Route path="/client/prets" element={<ClientPrets />} />
         <Route path="/client/cartes" element={<ClientCartes />} />
+        <Route path="/client/beneficiaires" element={<ClientBeneficiaires />} />
+        <Route path="/client/devises" element={<ClientDevises />} />
+        <Route path="/client/notifications" element={<ClientNotifications />} />
         <Route path="/client/profil" element={<ClientProfil />} />
       </Routes>
     </Router>

@@ -2,8 +2,7 @@ import { useNavigate } from 'react-router-dom'
 
 export default function AdminSidebar({ active }) {
   const navigate = useNavigate()
-
-  const links = [
+const links = [
     { icon: '📊', label: 'Dashboard', path: '/admin/dashboard' },
     { icon: '👥', label: 'Utilisateurs', path: '/admin/utilisateurs' },
     { icon: '🏦', label: 'Comptes', path: '/admin/comptes' },
@@ -11,9 +10,9 @@ export default function AdminSidebar({ active }) {
     { icon: '💰', label: 'Prêts', path: '/admin/prets' },
     { icon: '🚨', label: 'Alertes Fraude', path: '/admin/fraudes' },
     { icon: '📋', label: 'Journal Audit', path: '/admin/audit' },
+    { icon: '💱', label: 'Devises', path: '/admin/devises' },
     { icon: '📊', label: 'Rapports', path: '/admin/rapports' },
   ]
-
   return (
     <div style={{
       width: '260px', minHeight: '100vh',
